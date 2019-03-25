@@ -1,0 +1,79 @@
+<mvc:View
+xmlns:core="sap.ui.core"
+xmlns:mvc="sap.ui.core.mvc"
+xmlns="sap.m"
+controllerName="br.com.idxtecMotorista.controller.GravarMotorista"
+xmlns:html="http://www.w3.org/1999/xhtml"
+xmlns:f="sap.ui.layout.form">
+	<App>
+		<pages>
+			<Page showNavButton="true"
+				navButtonPress="onVoltar">
+				<content>
+					<VBox class="sapUiSmallMargin">	
+						<f:SimpleForm id="SimpleFormChange480_Trial"
+						editable="true"
+						layout="ResponsiveGridLayout"
+						title="{view>/titulo}"
+						labelSpanXL="4"
+						labelSpanL="4"
+						labelSpanM="4"
+						labelSpanS="12"
+						adjustLabelSpan="false"
+						emptySpanXL="0"
+						emptySpanL="0"
+						emptySpanM="0"
+						emptySpanS="0"
+						columnsXL="3"
+						columnsL="2"
+						columnsM="2"
+						singleContainerFullSize="false">
+							<f:content>
+								<Label text="Nome" labelFor="nome"/>
+								<Input id="nome" value="{model>/Nome}" required="true"/>
+								
+								<Label text="CPF" labelFor="cpf"/>
+								<Input id="cpf" value="{model>/Cpf}" required="true"/>
+								
+								<Label text="Email" labelFor="email"/>
+								<Input id="email" value="{model>/Email}"/>
+								
+								<Label text="Telefone" labelFor="tel"/>
+								<Input id="tel" value="{model>/Telefone}"/>
+								
+								<Label text="Parceiro de negócio" labelFor="parceironegocio"/>
+								<Input selectedKey="{model>/ParceiroNegocio}"
+									textFormatMode="KeyValue"
+									showSuggestion="true"
+									showValueHelp="true"
+									valueHelpRequest="handleSearchParceiro"
+									suggestionItems="{
+										path: '/ParceiroNegocios',
+										events: {
+											dataReceived: '.parceiroNegocioReceived'
+										}}"
+									id="parceironegocio">
+									<suggestionItems>
+										<core:ListItem key="{Id}" text="{RazaoSocial}"/>
+									</suggestionItems>
+								</Input>
+								
+								<Label text="Observações" labelFor="obs"/>
+								<TextArea id="obs" value="{model>/Observacoes}" rows="6" maxLength="254"/>
+								
+								<Label text="Bloqueado" labelFor="bloqueado"/>
+								<CheckBox selected="{model>/Bloqueado}"/>
+							</f:content>
+						</f:SimpleForm>
+					</VBox>
+				</content>
+				<footer>
+					<Toolbar>
+						<ToolbarSpacer/>
+						<Button id="salvar" text="Salvar" press="onSalvar"/>
+					</Toolbar>
+				</footer>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
