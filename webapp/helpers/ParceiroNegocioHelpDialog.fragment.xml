@@ -2,7 +2,7 @@
 	xmlns="sap.m"
 	xmlns:core="sap.ui.core">
 	<SelectDialog
-		title="Parceiros de negócio"
+		title="Parceiro de Negócio"
 		class="sapUiPopupWithPadding"
 		items="{/ParceiroNegocios}"
 		search="_handleValueHelpSearch"
