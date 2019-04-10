@@ -3,8 +3,9 @@ sap.ui.define([
 	"sap/ui/core/routing/History",
 	"sap/m/MessageBox",
 	"sap/ui/model/json/JSONModel",
-	"idxtec/lib/fragment/ParceiroNegocioHelpDialog"
-], function(Controller, History, MessageBox, JSONModel, ParceiroNegocioHelpDialog) {
+	"br/com/idxtecMotorista/helpers/ParceiroNegocioHelpDialog",
+	"br/com/idxtecMotorista/services/Session"
+], function(Controller, History, MessageBox, JSONModel, ParceiroNegocioHelpDialog, Session) {
 	"use strict";
 
 	return Controller.extend("br.com.idxtecMotorista.controller.GravarMotorista", {
@@ -26,8 +27,8 @@ sap.ui.define([
 		},
 		
 		handleSearchParceiro: function(oEvent){
-			var oHelp = new ParceiroNegocioHelpDialog(this.getView(), "parceironegocio");
-			oHelp.getDialog().open();
+			var sInputId = oEvent.getParameter("id");
+			ParceiroNegocioHelpDialog.handleValueHelp(this.getView(), sInputId, this);
 		},
 		
 		_routerMatch: function(){
@@ -55,7 +56,11 @@ sap.ui.define([
 					"Telefone": "",
 					"ParceiroNegocio": 0,
 					"Bloqueado": false,
-					"Observacoes": ""
+					"Observacoes": "",
+					"Empresa" : Session.get("EMPRESA_ID"),
+					"Usuario": Session.get("USUARIO_ID"),
+					"EmpresaDetails": { __metadata: { uri: "/Empresas(" + Session.get("EMPRESA_ID") + ")"}},
+					"UsuarioDetails": { __metadata: { uri: "/Usuarios(" + Session.get("USUARIO_ID") + ")"}}
 				};
 				
 				oJSONModel.setData(oNovoMotorista);
@@ -69,9 +74,6 @@ sap.ui.define([
 				oModel.read(oParam.sPath,{
 					success: function(oData) {
 						oJSONModel.setData(oData);
-					},
-					error: function(oError) {
-						MessageBox.error(oError.responseText);
 					}
 				});
 			}
@@ -79,7 +81,7 @@ sap.ui.define([
 		
 		onSalvar: function(){
 			if (this._checarCampos(this.getView())) {
-				MessageBox.information("Preencha todos os campos obrigatórios!");
+				MessageBox.warning("Preencha todos os campos obrigatórios!");
 				return;
 			}
 			
@@ -106,7 +108,7 @@ sap.ui.define([
 			var oJSONModel = this.getOwnerComponent().getModel("model");
 			var oDados = oJSONModel.getData();
 			
-			oDados.ParceiroNegocio = oDados.ParceiroNegocio ? parseInt(oDados.ParceiroNegocio, 0) : 0;
+			oDados.ParceiroNegocio = oDados.ParceiroNegocio ? oDados.ParceiroNegocio : 0;
 			
 			oDados.ParceiroNegocioDetails = {
 				__metadata: {
@@ -127,9 +129,6 @@ sap.ui.define([
 							that._goBack(); 
 						}
 					});
-				},
-				error: function(oError) {
-					MessageBox.error(oError.responseText);
 				}
 			});
 		},
@@ -145,15 +144,12 @@ sap.ui.define([
 							that._goBack();
 						}
 					});
-				},
-				error: function(oError) {
-					MessageBox.error(oError.responseText);
 				}
 			});
 		},
 		
 		_checarCampos: function(oView){
-			if(oView.byId("nome").getValue() === "" || oView.byId("cpf").getValue() === ""){
+			if(oView.byId("nome").getValue() === ""){
 				return true;
 			} else{
 				return false; 
@@ -162,7 +158,10 @@ sap.ui.define([
 		
 		onVoltar: function(){
 			this._goBack();
+		},
+		
+		getModel : function(sModel) {
+			return this.getOwnerComponent().getModel(sModel);	
 		}
 	});
-
 });
