@@ -10,7 +10,7 @@ xmlns:f="sap.ui.layout.form">
 			<Page showHeader="false">
 				<content>
 					<VBox class="sapUiSmallMargin">	
-						<Panel headerText="Motorista">
+						<Panel headerText="{view>/titulo}">
 							<f:SimpleForm id="formMotorista"
 								editable="true"
 								layout="ResponsiveGridLayout"
@@ -28,7 +28,6 @@ xmlns:f="sap.ui.layout.form">
 								columnsM="2"
 								singleContainerFullSize="false">
 								<f:content>
-									<core:Title text="{view>/titulo}"/>
 									<Label text="Nome" labelFor="nome"/>
 									<Input id="nome" value="{model>/Nome}" required="true"/>
 									
@@ -59,7 +58,7 @@ xmlns:f="sap.ui.layout.form">
 									</Input>
 									
 									<Label text="Observações" labelFor="obs"/>
-									<TextArea id="obs" value="{model>/Observacoes}" rows="6" maxLength="254"/>
+									<TextArea id="obs" value="{model>/Observacoes}" rows="6"/>
 									
 									<Label text="Bloqueado" labelFor="bloqueado"/>
 									<CheckBox selected="{model>/Bloqueado}"/>
@@ -71,8 +70,8 @@ xmlns:f="sap.ui.layout.form">
 				<footer>
 					<Toolbar>
 						<ToolbarSpacer/>
-						<Button icon="sap-icon://save" id="salvar" text="Salvar" press="onSalvar"/>
-						<Button icon="sap-icon://reset" id="voltar" text="Cancelar" press="onVoltar"/>
+						<Button text="Salvar" press="onSalvar" type="Accept"/>
+   						<Button text="Fechar" press="onVoltar" type="Reject"/>
 					</Toolbar>
 				</footer>
 			</Page>
