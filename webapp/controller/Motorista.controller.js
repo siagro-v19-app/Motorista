@@ -15,14 +15,16 @@ sap.ui.define([
 			this.getOwnerComponent().setModel(oParamModel, "parametros"); 
 			this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
 			
-			this.getModel().attachMetadataLoaded(function(){
-				var oFilter = new Filter("Empresa", FilterOperator.EQ, Session.get("EMPRESA_ID"));
-				var oView = this.getView();
-				var oTable = oView.byId("tableMotorista");
-				var oColumn = oView.byId("columnNome");
-				
-				oTable.sort(oColumn);
-				oView.byId("tableMotorista").getBinding("rows").filter(oFilter, "Application");
+			var oFilter = new Filter("Empresa", FilterOperator.EQ, Session.get("EMPRESA_ID"));
+			var oView = this.getView();
+			var oTable = oView.byId("tableMotorista");
+			
+			oTable.bindRows({
+				path: '/Motoristas',
+				sorter: {
+					path: 'Nome'
+				},
+				filters: oFilter
 			});
 		},
 		
